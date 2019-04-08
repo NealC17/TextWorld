@@ -11,14 +11,21 @@ public abstract class Creature {
         currentRoom = initNode;
     }
 
-    public abstract void move(Graph.Node nextRoom);
+    public abstract void move();
 
     public void randomizeRoom(){
 
         ArrayList<Graph.Node> neighbors= currentRoom.getNeighbors();
 
+
         currentRoom = neighbors.get((int)(Math.random()* neighbors.size()));
     }
+
+    public String toString(){
+        return getType() + " " + name;
+    }
+
+    public abstract String getType();
 
     public String getName() {
         return name;

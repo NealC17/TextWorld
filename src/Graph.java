@@ -1,3 +1,4 @@
+import javax.xml.soap.Node;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,11 +29,6 @@ public class Graph {
         return nodes.get(name);
     }
 
-    public void addCreature(Creature c, String room){
-        c.move(getNode(room));
-        creatures.add(c);
-    }
-
     public boolean removeCreature(Creature c){
         return creatures.remove(c);
     }
@@ -59,6 +55,34 @@ public class Graph {
 
 
         return crea;
+    }
+
+    public void addChickens(int num) {
+        for (int i = 0; i < num; i++) {
+            creatures.add(new Chicken(getRandomRoom()));
+        }
+    }
+
+    public void addWumpuses(int num, Player player) {
+        for (int i = 0; i < num; i++) {
+            Wumpus toAdd = new Wumpus(getRandomRoom());
+            toAdd.setPlayer(player);
+            creatures.add(toAdd);
+        }
+    }
+
+    public void addCreatures(int num, Player player) {
+        for (int i = 0; i < num; i++) {
+            double rand = Math.random();
+            if(rand < 0.33) addChickens(1);
+            else if(rand < 0.66) addWumpuses(1, player);
+        }
+    }
+
+    private Node getRandomRoom() {
+        ArrayList<Node> rooms = new ArrayList<>(nodes.values());
+
+        return rooms.get((int)(rooms.size()*Math.random()));
     }
 
 
@@ -112,8 +136,10 @@ public class Graph {
         }
 
         private void addNeighbor(Node n){
-            System.out.println("ADDING");
             neighbors.add(n);
+            if(!n.neighbors.contains(this)){
+                n.neighbors.add(this);
+            }
         }
 
 

@@ -3,41 +3,17 @@ import java.util.Scanner;
 public class Main {
 
 
-
-
-
     public static void main(String[] args) {
-        Player p = new Player("Neal", "hi hello nope bye haha lol");
+        Player p = new Player("Santa", "hi hello nope bye haha lol");
         Graph g = new Graph();
 
-        g.addNode("hall", "A long dank hallway");
-        g.addNode("closet", "Dark darker closet");
-        g.addNode("dungeon", "gulags");
-
-        g.addDirectedEdge("hall", "dungeon");
-        g.addUndirectedEdge("hall", "closet");
-
+        initGraph(g);
         p.setCurrentRoom(g.getNode("hall"));
-
         String response = "";
-
         Scanner s = new Scanner(System.in);
+        g.addCreatures(800, p);
 
-        g.addCreature(new Chicken("A"), "hall");
-        g.addCreature((new Chicken("B")), "hall");
-        g.addCreature(new Chicken("C"), "hall");
-        g.addCreature(new Chicken("D"), "hall");
-        g.addCreature(new Chicken("E"), "hall");
-        g.addCreature((new Chicken("F")), "hall");
-        g.addCreature(new Chicken("G"), "hall");
-        g.addCreature(new Chicken("H"), "hall");
-
-        g.getNode("dungeon").addItem(new Item("Knife", ""));
-        g.getNode("dungeon").addItem(new Item("Secret Item", ""));
-        g.getNode("dungeon").addItem(new Item("Poison", ""));
-        g.getNode("dungeon").addItem(new Item("what else do you find in the dungeon help plz", ""));
-        g.getNode("dungeon").addItem(new Item("Annoying Orange", ""));
-
+        addItems(g);
 
         do{
             g.moveChickens();
@@ -54,8 +30,6 @@ public class Main {
                 if(!p.moveToRoom(name)){
                     System.out.println("That is not a valid name please try again.");
                 }
-
-
             }
 
             else if(response.contains("take")) {
@@ -118,6 +92,7 @@ public class Main {
                 System.out.println("add room <roomname> - adds a room to the one you are in");
                 System.out.println("display inventory - displays what you currently own");
                 System.out.println("quit - terminates the program");
+
             }
 
 
@@ -126,6 +101,26 @@ public class Main {
 
     }
 
+    private static void addItems(Graph g) {
+
+        g.getNode("dungeon").addItem(new Item("Knife", ""));
+        g.getNode("dungeon").addItem(new Item("Secret Item", ""));
+        g.getNode("dungeon").addItem(new Item("Poison", ""));
+        g.getNode("dungeon").addItem(new Item("what else do you find in the dungeon help plz", ""));
+        g.getNode("dungeon").addItem(new Item("Annoying Orange", ""));
+
+    }
+
+    private static void initGraph(Graph g) {
+        g.addNode("hall", "A long dank hallway");
+        g.addNode("closet", "Dark darker closet");
+        g.addNode("dungeon", "gulags");
+        g.addNode("KGB headquarters", "The headquarters of the secret police");
+
+        g.addUndirectedEdge("hall", "dungeon");
+        g.addUndirectedEdge("hall", "closet");
+        g.addUndirectedEdge("KGB headquarters", "dungeon");
+    }
 
 
 }
