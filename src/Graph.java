@@ -1,4 +1,5 @@
 import javax.xml.soap.Node;
+import java.net.NetworkInterface;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,9 +39,9 @@ public class Graph {
         getNode(name1).addNeighbor(getNode(name2));
     }
 
-    public void moveChickens() {
+    public void move() {
         for (Creature c: creatures){
-            c.randomizeRoom();
+            c.move();
         }
     }
 
@@ -76,6 +77,15 @@ public class Graph {
             double rand = Math.random();
             if(rand < 0.33) addChickens(1);
             else if(rand < 0.66) addWumpuses(1, player);
+            else addPopStars(1, player);
+        }
+    }
+
+    public void addPopStars(int num, Player player) {
+        for (int i = 0; i < num; i++) {
+            PopStar toAdd = new PopStar(getRandomRoom());
+            toAdd.setPlayer(player);
+            creatures.add(toAdd);
         }
     }
 
@@ -169,6 +179,15 @@ public class Graph {
 
         public ArrayList<Node> getNeighbors() {
             return neighbors;
+        }
+
+        public boolean isNeighboring(String roomName) {
+            for(Node n: neighbors){
+                if(n.name.equals(roomName)){
+                    return true;
+                }
+            }
+            return false;
         }
     }
 
